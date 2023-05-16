@@ -6,7 +6,7 @@ import Image from "next/image";
 const Card: FunctionComponent<cardProps> = ({ title, subTitle, imageSrc }) => {
   const router = useRouter();
   return (
-    <div className="flex min-h-[200px] max-h-[250px] max-w-[450px] border-2 border-soft-gray rounded-lg mt-5 font-roboto shadow">
+    <div className="flex min-h-[200px] max-h-[250px] md:max-w-[450px] sm:w-full border-2 border-soft-gray rounded-lg mt-5 font-roboto shadow">
       <div className="flex flex-col mx-1 h-full w-1/2 mt-3 ml-5 ">
         <div className="text-university-green text-3xl font-medium mb-5">
           {title}
@@ -20,12 +20,13 @@ const Card: FunctionComponent<cardProps> = ({ title, subTitle, imageSrc }) => {
           </button>
         </div>
       </div>
-
       <div
         className="flex flex-col mx-1 h-full w-1/2 border-2 border-university-green rounded-lg mr-2 min-h[150px] max-h-[175px] 
         mt-3"
       >
-        <Image src={""} alt={"test"} className="h-[150px] w-[150px]" />
+        {imageSrc != "" && (
+          <Image src={imageSrc} alt={"test"} className="h-[150px] w-[150px]" />
+        )}
       </div>
     </div>
   );
