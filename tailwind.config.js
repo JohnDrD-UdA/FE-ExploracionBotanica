@@ -9,6 +9,8 @@ module.exports = {
     extend: {
       fontFamily: {
         roboto: ["var(--font-roboto)"],
+        slab: ['"Roboto Slab"', 'serif'],
+        mono: ['"Roboto Mono"', 'monospace'],
       },
       colors: (theme) => ({
         "university-green": "#33691E",

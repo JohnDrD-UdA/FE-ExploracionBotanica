@@ -20,7 +20,7 @@ const Footer: FunctionComponent = () => {
               goTo("https://github.com/uruenariobo");
             }}
           >
-            Miguel Angel Roibo Ureña
+            Miguel Angel Urueña Riobo
           </li>
           <li
             className="text-semibold ml-5 mt-2 text-sm cursor-pointer"
@@ -35,7 +35,7 @@ const Footer: FunctionComponent = () => {
       <div id="FooterAdv" className="flex flex-col w-[20%] my-auto">
         <span className="text-semibold mr-5 mt-5 text-sm justify-end my-auto">
           {" "}
-          Universidad de Antoquia- Estilos No oficiales, Proyecto Integrador
+          Universidad de Antoquia - Estilos No oficiales, Proyecto Integrador
           2023-1
         </span>
       </div>
