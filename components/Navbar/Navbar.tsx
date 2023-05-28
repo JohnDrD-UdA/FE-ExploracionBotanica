@@ -5,11 +5,13 @@ import searchIcon from "@/images/search-svgrepo-com.svg";
 import qrIcon from "@/images/qr-code-scan-svgrepo-com.svg";
 import downIcon from "@/images/chevron-down-svgrepo-com.svg";
 import upIcon from "@/images/chevron-up-svgrepo-com.svg";
+import Lecter from "../Lecter";
 
 const NavBar: FunctionComponent = () => {
   const router = useRouter();
   const [smSize, setSmSize] = useState<boolean>(false);
   const [arrowChange, setArrowChange] = useState<boolean>(false);
+  const [openLecter, setOpenLecter] = useState<boolean>(false);
   const handleResize = () => {
     window.innerWidth < 768 ? setSmSize(true) : setSmSize(false);
   };
@@ -23,6 +25,16 @@ const NavBar: FunctionComponent = () => {
 
   function changeArrow() {
     setArrowChange(!arrowChange);
+  }
+
+  function success(id: any) {
+    const objGiven = id;
+    setOpenLecter(false);
+    router.push("/Plant/" + id.text, undefined);
+  }
+
+  function error(e: string) {
+    setOpenLecter(false);
   }
 
   return (
@@ -76,7 +88,12 @@ const NavBar: FunctionComponent = () => {
             />
             <Image src={searchIcon} alt={""} className="w-[50px]" />
           </div>
-          <div className="my-auto flex  justify-center w-[20%] mr-2">
+          <div
+            className="my-auto flex  justify-center w-[20%] mr-2"
+            onClick={() => {
+              setOpenLecter(true);
+            }}
+          >
             <Image src={qrIcon} alt={""} className="w-[50px]" />
           </div>
         </div>
@@ -84,10 +101,29 @@ const NavBar: FunctionComponent = () => {
 
       {!smSize && (
         <div className="ml-20 mt-2 max-w-[7%] flex-1 h-[125px] item-center flex justify-center font-roboto bg-university-green rounded-3xl ">
-          <div className="my-auto flex flex-1 justify-center">
+          <div
+            className="my-auto flex flex-1 justify-center"
+            onClick={() => {
+              setOpenLecter(true);
+            }}
+          >
             <Image src={qrIcon} alt={""} className="w-[100px]" />
           </div>
         </div>
+      )}
+
+      {openLecter && (
+        <>
+          <Lecter
+            onSubmit={(id: any) => {
+              success(id);
+            }}
+            show={openLecter}
+            close={() => {
+              setOpenLecter(false);
+            }}
+          ></Lecter>
+        </>
       )}
     </div>
   );

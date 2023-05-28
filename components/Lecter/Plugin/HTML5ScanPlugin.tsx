@@ -1,6 +1,5 @@
-// file = Html5QrcodePlugin.jsx
-import { Html5QrcodeScanner } from "html5-qrcode";
-import { FunctionComponent, useEffect } from "react";
+import { Html5Qrcode, Html5QrcodeScanner } from "html5-qrcode";
+import { FunctionComponent, useEffect, useRef, useState } from "react";
 import { ScanProps } from "./HTML5Sscan.interface";
 
 const qrcodeRegionId = "html5qr-code-full-region";
@@ -24,7 +23,7 @@ const createConfig = (props: any) => {
   return config;
 };
 
-const Html5QrcodePlugin: FunctionComponent<ScanProps> = (props) => {
+const Html5QrcodePluginold: FunctionComponent<ScanProps> = (props) => {
   useEffect(() => {
     // when component mounts
     const config = createConfig(props);
@@ -54,4 +53,65 @@ const Html5QrcodePlugin: FunctionComponent<ScanProps> = (props) => {
   return <div id={qrcodeRegionId} />;
 };
 
+export const Html5QrcodePlugin: FunctionComponent<ScanProps> = (props) => {
+  const previewRef = useRef<HTMLDivElement>(null);
+  const memoizedResultHandler = useRef(props.qrCodeSuccessCallback);
+  const memoizedErrorHandler = useRef(props.qrCodeErrorCallback);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    memoizedResultHandler.current = props.qrCodeSuccessCallback;
+  }, [props.qrCodeSuccessCallback]);
+
+  useEffect(() => {
+    memoizedErrorHandler.current = props.qrCodeErrorCallback;
+  }, [props.qrCodeErrorCallback]);
+
+  useEffect(() => {
+    navigator.mediaDevices
+      .getUserMedia({
+        video: true,
+        audio: false,
+      })
+      .then((stream) => {
+        stream.getTracks().forEach((t) => {
+          t.stop();
+        });
+      })
+      .catch(() => {
+        console.log("error on tracks");
+      });
+
+    setLoading(false);
+  }, []);
+
+  useEffect(() => {
+    if (!loading) {
+      if (!previewRef.current) return;
+      const html5QrcodeScanner = new Html5Qrcode(previewRef.current.id);
+      const didStart = html5QrcodeScanner
+        .start(
+          { facingMode: "environment" },
+          { fps: 10 },
+          (_, { result }) => {
+            memoizedResultHandler.current(result);
+          },
+          (_, error) => {
+            memoizedErrorHandler.current(error);
+          }
+        )
+        .then(() => true);
+      return () => {
+        didStart
+          .then(() => {
+            html5QrcodeScanner.stop();
+          })
+          .catch(() => {
+            console.log("Error stopping scanner");
+          });
+      };
+    }
+  }, [loading]);
+
+  return <div id="preview" ref={previewRef} />;
+};
 export default Html5QrcodePlugin;

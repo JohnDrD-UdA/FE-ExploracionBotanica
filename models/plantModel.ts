@@ -1,13 +1,14 @@
 export class plant {
-  name!: string;
-  sciName!: string;
+  common_name!: string;
+  scientific_name!: string;
   description!: string;
   height?: number;
-  isPoisonous?: boolean;
+  isPousonous?: boolean;
   isEatable?: boolean;
   hasFlowers?: boolean;
   produceFruits?: boolean;
-  isShadePLant?: boolean;
-  isSunPLant?: boolean;
+  isShadePlant?: boolean;
+  isSunPlant?: boolean;
   imgSrc?: string;
+  id?: string;
 }
